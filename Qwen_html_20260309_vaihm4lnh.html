@@ -1,0 +1,2447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>GameEarn - Play & Earn</title>
+  
+  <!-- Firebase SDK (CDN) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  
+  <!-- PopAds Script (EXACT as specified) -->
+  <script type="text/javascript" data-cfasync="false">
+  /*<![CDATA[/* */
+  (function(){var a=window,u="a537708241efacb83df13ea504ba8a0f",s=[["siteId",934+573*76-682+899+5238348],["minBid",0],["popundersPerIP","0"],["delayBetween",0],["default",false],["defaultPerDay",0],["topmostLayer","auto"]],l=["d3d3LnhhZHNtYXJ0LmNvbS9lWC9rZnJvYWxhX2VkaXRvci5taW4uanM=","ZDExZW5xMnJ5bXkweWwuY2xvdWRmcm9udC5uZXQvQkRmZC9Qc1l1RmQvcmJvb3RzdHJhcC10b3VyLm1pbi5jc3M="],k=-1,t,c,m=function(){clearTimeout(c);k++;if(l[k]&&!(1798945093000<(new Date).getTime()&&1<k)){t=a.document.createElement("script");t.type="text/javascript";t.async=!0;var g=a.document.getElementsByTagName("script")[0];t.src="https://"+atob(l[k]);t.crossOrigin="anonymous";t.onerror=m;t.onload=function(){clearTimeout(c);a[u.slice(0,16)+u.slice(0,16)]||m()};c=setTimeout(m,5E3);g.parentNode.insertBefore(t,g)}};if(!a[u]){try{Object.freeze(a[u]=s)}catch(e){}m()}})();
+  /*]]>/* */
+  </script>
+  
+  <style>
+    /* ===== GLOBAL STYLES ===== */
+    :root {
+      --bg-dark: #121212;
+      --card-bg: #1E1E1E;
+      --accent: #6B46C1;
+      --accent-hover: #553C9A;
+      --text-primary: #FFFFFF;
+      --text-secondary: #B0B0B0;
+      --success: #10B981;
+      --warning: #F97316;
+      --danger: #EF4444;
+      --border-radius: 16px;
+      --transition: all 0.3s ease;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+    
+    body {
+      font-family: 'Poppins', 'Roboto', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-primary);
+      line-height: 1.5;
+      overflow-x: hidden;
+      min-height: 100vh;
+      position: relative;
+    }
+    
+    /* ===== UTILITIES ===== */
+    .hidden { display: none !important; }
+    .flex { display: flex; }
+    .flex-col { flex-direction: column; }
+    .items-center { align-items: center; }
+    .justify-center { justify-content: center; }
+    .justify-between { justify-content: space-between; }
+    .gap-2 { gap: 0.5rem; }
+    .gap-4 { gap: 1rem; }
+    .p-4 { padding: 1rem; }
+    .p-6 { padding: 1.5rem; }
+    .rounded { border-radius: var(--border-radius); }
+    .text-center { text-align: center; }
+    .text-xl { font-size: 1.25rem; }
+    .text-2xl { font-size: 1.5rem; }
+    .text-3xl { font-size: 1.875rem; }
+    .font-bold { font-weight: 700; }
+    .mt-2 { margin-top: 0.5rem; }
+    .mt-4 { margin-top: 1rem; }
+    .mb-4 { margin-bottom: 1rem; }
+    .w-full { width: 100%; }
+    .max-w-md { max-width: 28rem; }
+    .mx-auto { margin-left: auto; margin-right: auto; }
+    
+    /* ===== BUTTONS ===== */
+    .btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      width: 100%;
+      max-width: 300px;
+    }
+    
+    .btn:hover { background: var(--accent-hover); transform: translateY(-2px); }
+    .btn:active { transform: translateY(0); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--accent);
+      color: var(--accent);
+    }
+    
+    .btn-outline:hover { background: rgba(107, 70, 193, 0.1); }
+    
+    .btn-success { background: var(--success); }
+    .btn-warning { background: var(--warning); }
+    .btn-danger { background: var(--danger); }
+    
+    /* ===== CARDS ===== */
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      padding: 1.25rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      margin-bottom: 1rem;
+    }
+    
+    /* ===== FORMS ===== */
+    .input-group { margin-bottom: 1rem; }
+    
+    .input-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+    
+    .input-field {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      background: #2D2D2D;
+      border: 1px solid #444;
+      border-radius: 10px;
+      color: white;
+      font-size: 1rem;
+      transition: var(--transition);
+    }
+    
+    .input-field:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(107, 70, 193, 0.3);
+    }
+    
+    /* ===== NAVIGATION ===== */
+    .nav-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--card-bg);
+      display: flex;
+      justify-content: space-around;
+      padding: 0.75rem 0;
+      border-top: 1px solid #333;
+      z-index: 100;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.75rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 8px;
+      transition: var(--transition);
+    }
+    
+    .nav-item.active, .nav-item:hover {
+      color: var(--accent);
+      background: rgba(107, 70, 193, 0.1);
+    }
+    
+    .nav-icon {
+      font-size: 1.25rem;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    /* ===== GAME CANVAS ===== */
+    #gameCanvas {
+      display: block;
+      width: 100%;
+      max-width: 400px;
+      height: 600px;
+      margin: 0 auto;
+      background: #0a0a0a;
+      border-radius: 12px;
+      touch-action: none;
+    }
+    
+    /* ===== COIN BALANCE ===== */
+    .coin-balance {
+      position: fixed;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, #FFD700, #FFA500);
+      color: #000;
+      padding: 0.5rem 1.25rem;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      max-width: 90%;
+    }
+    
+    .coin-icon {
+      font-size: 1.2rem;
+    }
+    
+    /* ===== SPIN WHEEL ===== */
+    .wheel-container {
+      position: relative;
+      width: 280px;
+      height: 280px;
+      margin: 0 auto 1.5rem;
+    }
+    
+    .wheel {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: conic-gradient(
+        #FF6B6B 0% 12.5%,
+        #4ECDC4 12.5% 25%,
+        #45B7D1 25% 37.5%,
+        #96CEB4 37.5% 50%,
+        #FECA57 50% 62.5%,
+        #FF9FF3 62.5% 75%,
+        #FF6B6B 75% 87.5%,
+        #54A0FF 87.5% 100%
+      );
+      border: 8px solid var(--card-bg);
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      transition: transform 3s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+      position: relative;
+    }
+    
+    .wheel::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 60px;
+      height: 60px;
+      background: var(--card-bg);
+      border-radius: 50%;
+      border: 4px solid var(--accent);
+      z-index: 10;
+    }
+    
+    .wheel-segment {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      clip-path: polygon(50% 50%, 50% 0%, 100% 0%, 100% 100%, 50% 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-top: 40px;
+      font-weight: 700;
+      color: white;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+      transform-origin: center;
+    }
+    
+    .pointer {
+      position: absolute;
+      top: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 15px solid transparent;
+      border-right: 15px solid transparent;
+      border-top: 30px solid var(--accent);
+      z-index: 20;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    }
+    
+    /* ===== DAILY CHECKIN ===== */
+    .checkin-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 0.5rem;
+      margin: 1rem 0;
+    }
+    
+    .checkin-day {
+      aspect-ratio: 1;
+      background: #2D2D2D;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      position: relative;
+      transition: var(--transition);
+    }
+    
+    .checkin-day.claimed {
+      background: linear-gradient(135deg, var(--success), #059669);
+      color: white;
+    }
+    
+    .checkin-day.today {
+      border: 2px solid var(--warning);
+      box-shadow: 0 0 10px rgba(249, 115, 22, 0.5);
+    }
+    
+    .checkin-day .coins {
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-top: 2px;
+    }
+    
+    /* ===== WITHDRAWAL FORM ===== */
+    .withdrawal-methods {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    
+    .method-btn {
+      flex: 1;
+      padding: 0.75rem;
+      background: #2D2D2D;
+      border: 2px solid transparent;
+      border-radius: 10px;
+      color: var(--text-secondary);
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      text-align: center;
+    }
+    
+    .method-btn.active, .method-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(107, 70, 193, 0.1);
+    }
+    
+    /* ===== TOAST NOTIFICATIONS ===== */
+    .toast {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-100px);
+      background: var(--card-bg);
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      max-width: 90%;
+      animation: slideDown 0.3s forwards, slideUp 0.3s 2.7s forwards;
+    }
+    
+    @keyframes slideDown {
+      to { transform: translateX(-50%) translateY(0); }
+    }
+    
+    @keyframes slideUp {
+      to { transform: translateX(-50%) translateY(-100px); opacity: 0; }
+    }
+    
+    .toast.success { border-left: 4px solid var(--success); }
+    .toast.error { border-left: 4px solid var(--danger); }
+    .toast.warning { border-left: 4px solid var(--warning); }
+    
+    /* ===== SPLASH SCREEN ===== */
+    .splash-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, var(--bg-dark), #0a0a0a);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      animation: fadeOut 0.5s 2.5s forwards;
+    }
+    
+    @keyframes fadeOut {
+      to { opacity: 0; visibility: hidden; }
+    }
+    
+    .splash-logo {
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent), var(--warning));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1rem;
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    
+    .splash-loading {
+      width: 50px;
+      height: 50px;
+      border: 4px solid rgba(107, 70, 193, 0.3);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-top: 1.5rem;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    /* ===== GAME OVERLAY ===== */
+    .game-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.9);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 300;
+      padding: 1rem;
+    }
+    
+    .game-over-text {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, var(--warning), var(--danger));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .game-stats {
+      background: var(--card-bg);
+      padding: 1.5rem;
+      border-radius: var(--border-radius);
+      margin: 1rem 0;
+      min-width: 250px;
+      text-align: center;
+    }
+    
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #333;
+    }
+    
+    .stat-row:last-child { border-bottom: none; }
+    
+    .stat-label { color: var(--text-secondary); }
+    .stat-value { font-weight: 700; color: var(--accent); }
+    
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 480px) {
+      .text-3xl { font-size: 1.5rem; }
+      .text-2xl { font-size: 1.25rem; }
+      .p-6 { padding: 1rem; }
+      .wheel-container { width: 240px; height: 240px; }
+      #gameCanvas { height: 500px; }
+    }
+    
+    /* ===== ANIMATIONS ===== */
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    .floating { animation: float 3s ease-in-out infinite; }
+    
+    .pulse {
+      animation: pulse 2s infinite;
+    }
+    
+    /* ===== ADMIN PANEL ===== */
+    .admin-header {
+      background: linear-gradient(135deg, var(--accent), #4C1D95);
+      padding: 1.5rem;
+      border-radius: var(--border-radius) var(--border-radius) 0 0;
+      margin-bottom: 1.5rem;
+    }
+    
+    .admin-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .admin-card {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      padding: 1.25rem;
+    }
+    
+    .admin-card h3 {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .admin-card .value {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    
+    .table-container {
+      overflow-x: auto;
+      border-radius: var(--border-radius);
+      background: var(--card-bg);
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 600px;
+    }
+    
+    th, td {
+      padding: 0.875rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid #333;
+    }
+    
+    th {
+      background: #252525;
+      font-weight: 600;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    tr:hover { background: rgba(107, 70, 193, 0.05); }
+    
+    .status-badge {
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+    
+    .status-pending { background: rgba(249, 115, 22, 0.2); color: var(--warning); }
+    .status-approved { background: rgba(16, 185, 129, 0.2); color: var(--success); }
+    .status-paid { background: rgba(107, 70, 193, 0.2); color: var(--accent); }
+    .status-rejected { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
+    
+    .action-btn {
+      padding: 0.35rem 0.75rem;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      margin: 0 0.25rem;
+      cursor: pointer;
+      border: none;
+      transition: var(--transition);
+    }
+    
+    .action-btn.approve { background: var(--success); color: white; }
+    .action-btn.reject { background: var(--danger); color: white; }
+    .action-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+    
+    /* ===== GAME CONTROLS HINT ===== */
+    .controls-hint {
+      position: absolute;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(30, 30, 30, 0.9);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      max-width: 90%;
+      text-align: center;
+      z-index: 50;
+      animation: fadeInOut 4s infinite;
+    }
+    
+    @keyframes fadeInOut {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <!-- ===== SPLASH SCREEN ===== -->
+  <div id="splashScreen" class="splash-screen">
+    <div class="splash-logo">GameEarn</div>
+    <div class="text-secondary">Play • Earn • Withdraw</div>
+    <div class="splash-loading"></div>
+  </div>
+
+  <!-- ===== TOAST CONTAINER ===== -->
+  <div id="toastContainer"></div>
+
+  <!-- ===== COIN BALANCE (always visible when logged in) ===== -->
+  <div id="coinBalance" class="coin-balance hidden">
+    <span class="coin-icon">🪙</span>
+    <span id="coinAmount">0</span>
+  </div>
+
+  <!-- ===== AUTH SCREEN ===== -->
+  <div id="authScreen" class="p-6 max-w-md mx-auto hidden">
+    <div class="text-center mb-4">
+      <h1 class="text-3xl font-bold">Welcome to GameEarn</h1>
+      <p class="text-secondary mt-2">Play games, earn coins, withdraw real money</p>
+    </div>
+    
+    <div class="card">
+      <div class="input-group">
+        <label class="input-label">Email</label>
+        <input type="email" id="emailInput" class="input-field" placeholder="your@email.com">
+      </div>
+      
+      <div class="input-group">
+        <label class="input-label">Password</label>
+        <input type="password" id="passwordInput" class="input-field" placeholder="••••••••">
+      </div>
+      
+      <button id="loginBtn" class="btn mb-2">Login</button>
+      <button id="signupBtn" class="btn btn-outline mb-4">Create Account</button>
+      
+      <div class="text-center text-secondary mb-4">or continue with</div>
+      
+      <button id="googleBtn" class="btn" style="background: #DB4437;">
+        <span>G</span> Google Sign-in
+      </button>
+      
+      <div class="text-center mt-4">
+        <a href="#" id="forgotPassword" class="text-secondary" style="font-size: 0.9rem;">Forgot Password?</a>
+      </div>
+    </div>
+    
+    <div class="text-center mt-4 text-secondary" style="font-size: 0.8rem;">
+      By continuing, you agree to our <a href="#" style="color: var(--accent);">Terms</a> and <a href="#" style="color: var(--accent);">Privacy Policy</a>
+    </div>
+  </div>
+
+  <!-- ===== HOME SCREEN ===== -->
+  <div id="homeScreen" class="p-6 max-w-md mx-auto hidden">
+    <div class="flex justify-between items-center mb-4">
+      <div>
+        <h1 class="text-2xl font-bold">Hello, <span id="userName">Player</span>! 👋</h1>
+        <p class="text-secondary">Ready to earn?</p>
+      </div>
+      <button id="logoutBtn" class="btn btn-danger" style="padding: 0.5rem 1rem; width: auto; font-size: 0.9rem;">
+        Logout
+      </button>
+    </div>
+    
+    <!-- Daily Check-in Banner -->
+    <div class="card" style="background: linear-gradient(135deg, #1E3A8A, #1D4ED8); border: none;">
+      <div class="flex justify-between items-center">
+        <div>
+          <div class="font-bold">Daily Check-in</div>
+          <div class="text-sm text-blue-100">Day <span id="checkinDay">1</span>: +<span id="checkinReward">10</span> coins</div>
+        </div>
+        <button id="checkinBtn" class="btn" style="background: white; color: #1D4ED8; width: auto; padding: 0.5rem 1.25rem;">
+          Claim
+        </button>
+      </div>
+    </div>
+    
+    <!-- Quick Actions -->
+    <div class="grid grid-cols-2 gap-4 mb-6">
+      <div class="card text-center" id="gamesCard" style="cursor: pointer; transition: var(--transition);">
+        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🎮</div>
+        <div class="font-bold">Games</div>
+        <div class="text-secondary text-sm">4 games to play</div>
+      </div>
+      <div class="card text-center" id="spinCard" style="cursor: pointer; transition: var(--transition);">
+        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🎡</div>
+        <div class="font-bold">Spin Wheel</div>
+        <div class="text-secondary text-sm">Free every 4h</div>
+      </div>
+      <div class="card text-center" id="walletCard" style="cursor: pointer; transition: var(--transition);">
+        <div style="font-size: 2rem; margin-bottom: 0.5rem;">💰</div>
+        <div class="font-bold">Wallet</div>
+        <div class="text-secondary text-sm">Withdraw earnings</div>
+      </div>
+      <div class="card text-center" id="profileCard" style="cursor: pointer; transition: var(--transition);">
+        <div style="font-size: 2rem; margin-bottom: 0.5rem;">👤</div>
+        <div class="font-bold">Profile</div>
+        <div class="text-secondary text-sm">Settings & referrals</div>
+      </div>
+    </div>
+    
+    <!-- Stats Overview -->
+    <div class="card">
+      <div class="flex justify-between mb-3">
+        <span class="text-secondary">Total Earnings</span>
+        <span class="font-bold" id="totalEarnings">0 coins</span>
+      </div>
+      <div class="flex justify-between mb-3">
+        <span class="text-secondary">Referrals</span>
+        <span class="font-bold" id="referralCount">0</span>
+      </div>
+      <div class="flex justify-between">
+        <span class="text-secondary">Withdrawn</span>
+        <span class="font-bold" id="withdrawnAmount">₹0</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== GAMES SCREEN ===== -->
+  <div id="gamesScreen" class="p-6 max-w-md mx-auto hidden">
+    <div class="flex items-center mb-4">
+      <button id="backToHome" class="mr-3" style="background: none; border: none; color: white; font-size: 1.5rem;">←</button>
+      <h1 class="text-2xl font-bold">Choose a Game</h1>
+    </div>
+    
+    <div class="grid grid-cols-1 gap-4">
+      <!-- Game 1: Temple Run Style -->
+      <div class="card flex items-center" id="game1" style="cursor: pointer; transition: var(--transition);">
+        <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #78350F, #92400E); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin-right: 1rem;">⛩️</div>
+        <div>
+          <div class="font-bold text-lg">Temple Runner</div>
+          <div class="text-secondary text-sm">Swipe to avoid obstacles • Earn 20 coins/2min</div>
+        </div>
+      </div>
+      
+      <!-- Game 2: Subway Surfers Style -->
+      <div class="card flex items-center" id="game2" style="cursor: pointer; transition: var(--transition);">
+        <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #1E40AF, #1D4ED8); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin-right: 1rem;">🚇</div>
+        <div>
+          <div class="font-bold text-lg">Subway Dash</div>
+          <div class="text-secondary text-sm">Jump & dodge trains • Earn 20 coins/2min</div>
+        </div>
+      </div>
+      
+      <!-- Game 3: Flappy Bird Style -->
+      <div class="card flex items-center" id="game3" style="cursor: pointer; transition: var(--transition);">
+        <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #047857, #059669); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin-right: 1rem;">🐦</div>
+        <div>
+          <div class="font-bold text-lg">Flappy Coins</div>
+          <div class="text-secondary text-sm">Tap to flap • Earn 20 coins/2min</div>
+        </div>
+      </div>
+      
+      <!-- Game 4: City Car Driving -->
+      <div class="card flex items-center" id="game4" style="cursor: pointer; transition: var(--transition);">
+        <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #B91C1C, #DC2626); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin-right: 1rem;">🚗</div>
+        <div>
+          <div class="font-bold text-lg">City Driver</div>
+          <div class="text-secondary text-sm">Avoid traffic • Earn 20 coins/2min</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="text-center mt-6 text-secondary text-sm">
+      💡 Games earn coins automatically every 2 minutes via background ads
+    </div>
+  </div>
+
+  <!-- ===== GAME PLAY SCREEN ===== -->
+  <div id="gamePlayScreen" class="hidden" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #000; z-index: 250; display: flex; flex-direction: column;">
+    <div class="flex justify-between items-center p-4" style="background: rgba(18,18,18,0.9);">
+      <button id="exitGame" style="background: none; border: none; color: white; font-size: 1.5rem;">✕</button>
+      <div class="font-bold" id="gameTitle">Game</div>
+      <div class="coin-balance" style="position: static; transform: none; padding: 0.35rem 0.875rem; font-size: 0.95rem;">
+        <span class="coin-icon">🪙</span><span id="gameCoinBalance">0</span>
+      </div>
+    </div>
+    
+    <div style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 1rem;">
+      <canvas id="gameCanvas" width="300" height="500"></canvas>
+    </div>
+    
+    <div class="controls-hint" id="gameControlsHint">
+      Swipe: Move • Tap: Jump/Action • Hold: Special
+    </div>
+    
+    <!-- Game Over Overlay (hidden by default) -->
+    <div id="gameOverOverlay" class="game-overlay hidden">
+      <div class="game-over-text">Game Over!</div>
+      <div class="game-stats">
+        <div class="stat-row">
+          <span class="stat-label">Distance</span>
+          <span class="stat-value" id="finalDistance">0m</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Coins Earned</span>
+          <span class="stat-value" id="finalCoins">+0</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Total Balance</span>
+          <span class="stat-value" id="finalBalance">0</span>
+        </div>
+      </div>
+      <button id="playAgainBtn" class="btn mb-2">Play Again</button>
+      <button id="homeFromGameBtn" class="btn btn-outline">Home</button>
+    </div>
+  </div>
+
+  <!-- ===== SPIN WHEEL SCREEN ===== -->
+  <div id="spinScreen" class="p-6 max-w-md mx-auto hidden">
+    <div class="flex items-center mb-4">
+      <button id="backToHome2" class="mr-3" style="background: none; border: none; color: white; font-size: 1.5rem;">←</button>
+      <h1 class="text-2xl font-bold">Spin & Win</h1>
+    </div>
+    
+    <div class="card text-center mb-4">
+      <div class="text-secondary mb-2">Free spin every 4 hours</div>
+      <div id="spinTimer" class="text-xl font-bold" style="color: var(--warning);">00:00:00</div>
+    </div>
+    
+    <div class="wheel-container">
+      <div class="pointer"></div>
+      <div class="wheel" id="wheel">
+        <!-- Segments added via JS -->
+      </div>
+    </div>
+    
+    <button id="spinBtn" class="btn mb-3">SPIN NOW</button>
+    <button id="adSpinBtn" class="btn btn-outline">Watch Ad for Extra Spin</button>
+    
+    <div class="card mt-6">
+      <div class="font-bold mb-2">Prize Segments</div>
+      <div class="grid grid-cols-4 gap-2 text-center text-sm">
+        <div>10🪙</div><div>20🪙</div><div>30🪙</div><div>50🪙</div>
+        <div>100🪙</div><div>200🪙</div><div>500🪙</div><div>🎉JACKPOT</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== WALLET SCREEN ===== -->
+  <div id="walletScreen" class="p-6 max-w-md mx-auto hidden">
+    <div class="flex items-center mb-4">
+      <button id="backToHome3" class="mr-3" style="background: none; border: none; color: white; font-size: 1.5rem;">←</button>
+      <h1 class="text-2xl font-bold">My Wallet</h1>
+    </div>
+    
+    <div class="card text-center mb-4" style="background: linear-gradient(135deg, var(--accent), #4C1D95);">
+      <div class="text-secondary">Available Balance</div>
+      <div class="text-3xl font-bold mt-1" id="walletBalance">0 coins</div>
+      <div class="text-sm mt-1" style="opacity: 0.9;">≈ ₹<span id="rupeeValue">0.00</span></div>
+    </div>
+    
+    <button id="withdrawBtn" class="btn mb-4">Withdraw Coins</button>
+    
+    <div class="card">
+      <div class="flex justify-between items-center mb-3">
+        <div class="font-bold">Transaction History</div>
+        <select id="txFilter" class="input-field" style="width: auto; padding: 0.4rem 0.75rem; font-size: 0.85rem;">
+          <option value="all">All</option>
+          <option value="earn">Earnings</option>
+          <option value="withdraw">Withdrawals</option>
+          <option value="bonus">Bonuses</option>
+        </select>
+      </div>
+      
+      <div id="transactionList" style="max-height: 300px; overflow-y: auto;">
+        <!-- Transactions loaded via JS -->
+        <div class="text-center text-secondary py-4">No transactions yet</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== WITHDRAWAL MODAL ===== -->
+  <div id="withdrawModal" class="game-overlay hidden">
+    <div class="card" style="width: 100%; max-width: 400px;">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-bold">Withdraw Coins</h2>
+        <button id="closeWithdraw" style="background: none; border: none; color: white; font-size: 1.5rem;">✕</button>
+      </div>
+      
+      <div class="mb-4">
+        <div class="text-secondary mb-1">Amount to withdraw</div>
+        <div class="flex items-center gap-2">
+          <input type="number" id="withdrawAmount" class="input-field" placeholder="Min ₹50" min="50">
+          <span style="color: var(--text-secondary);">₹</span>
+        </div>
+        <div class="text-sm text-secondary mt-1">
+          Conversion: 100 coins = ₹1 • Min: ₹50 (UPI) / ₹100 (Bank)
+        </div>
+      </div>
+      
+      <div class="mb-4">
+        <div class="input-label">Payment Method</div>
+        <div class="withdrawal-methods">
+          <div class="method-btn active" data-method="upi">UPI</div>
+          <div class="method-btn" data-method="bank">Bank Transfer</div>
+        </div>
+      </div>
+      
+      <div id="upiForm">
+        <div class="input-group">
+          <label class="input-label">UPI ID</label>
+          <input type="text" id="upiId" class="input-field" placeholder="yourname@upi">
+        </div>
+      </div>
+      
+      <div id="bankForm" class="hidden">
+        <div class="input-group">
+          <label class="input-label">Account Holder Name</label>
+          <input type="text" id="accountName" class="input-field">
+        </div>
+        <div class="input-group">
+          <label class="input-label">Account Number</label>
+          <input type="text" id="accountNumber" class="input-field">
+        </div>
+        <div class="input-group">
+          <label class="input-label">IFSC Code</label>
+          <input type="text" id="ifscCode" class="input-field" placeholder="BANK0001234">
+        </div>
+        <div class="input-group">
+          <label class="input-label">Bank Name</label>
+          <input type="text" id="bankName" class="input-field">
+        </div>
+      </div>
+      
+      <button id="submitWithdraw" class="btn">Submit Request</button>
+      
+      <div class="text-center text-secondary text-sm mt-4">
+        Processing time: 24-72 hours • Requests reviewed manually
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PROFILE SCREEN ===== -->
+  <div id="profileScreen" class="p-6 max-w-md mx-auto hidden">
+    <div class="flex items-center mb-4">
+      <button id="backToHome4" class="mr-3" style="background: none; border: none; color: white; font-size: 1.5rem;">←</button>
+      <h1 class="text-2xl font-bold">My Profile</h1>
+    </div>
+    
+    <div class="card text-center mb-4">
+      <div style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--accent), var(--warning)); border-radius: 50%; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; font-size: 2rem;">👤</div>
+      <div class="font-bold text-lg" id="profileName">Player</div>
+      <div class="text-secondary" id="profileEmail">user@email.com</div>
+      <div class="mt-2">
+        <span class="status-badge" style="background: rgba(16,185,129,0.2); color: var(--success);">Active</span>
+      </div>
+    </div>
+    
+    <div class="card mb-4">
+      <div class="flex justify-between py-2">
+        <span class="text-secondary">Member Since</span>
+        <span id="memberSince">--</span>
+      </div>
+      <div class="flex justify-between py-2">
+        <span class="text-secondary">Total Earnings</span>
+        <span class="font-bold" id="profileTotalEarned">0 coins</span>
+      </div>
+      <div class="flex justify-between py-2">
+        <span class="text-secondary">Referrals</span>
+        <span class="font-bold" id="profileReferrals">0</span>
+      </div>
+      <div class="flex justify-between py-2">
+        <span class="text-secondary">Withdrawn</span>
+        <span class="font-bold" id="profileWithdrawn">₹0</span>
+      </div>
+    </div>
+    
+    <div class="card mb-4">
+      <div class="font-bold mb-2">Your Referral Code</div>
+      <div class="flex items-center gap-2 mb-3">
+        <input type="text" id="referralCode" class="input-field" readonly value="GAME-XXXX">
+        <button id="copyReferral" class="btn" style="width: auto; padding: 0.6rem 1rem;">Copy</button>
+      </div>
+      <div class="text-sm text-secondary mb-3">
+        Share your code: Friends get 100 coins, you get 500 coins when they sign up!
+      </div>
+      <div class="flex gap-2">
+        <button class="btn btn-outline" style="flex:1; padding: 0.5rem;">WhatsApp</button>
+        <button class="btn btn-outline" style="flex:1; padding: 0.5rem;">SMS</button>
+      </div>
+    </div>
+    
+    <button id="settingsBtn" class="btn btn-outline mb-2">⚙️ App Settings</button>
+    <button id="adminBtn" class="btn btn-warning mb-4 hidden">👨‍💼 Admin Panel</button>
+    
+    <div class="text-center text-secondary text-sm">
+      <a href="#" style="color: var(--accent);">Privacy Policy</a> • 
+      <a href="#" style="color: var(--accent);">Terms of Service</a><br>
+      App Version: 1.0.0 • © 2024 GameEarn
+    </div>
+  </div>
+
+  <!-- ===== ADMIN PANEL ===== -->
+  <div id="adminScreen" class="hidden" style="min-height: 100vh; padding-bottom: 80px;">
+    <div class="admin-header">
+      <div class="flex justify-between items-center">
+        <h1 class="text-2xl font-bold">Admin Dashboard</h1>
+        <button id="exitAdmin" class="btn" style="width: auto; padding: 0.5rem 1rem; background: rgba(255,255,255,0.2);">Exit</button>
+      </div>
+      <div class="text-blue-100 mt-1">Manage users, games & withdrawals</div>
+    </div>
+    
+    <div class="p-4 max-w-5xl mx-auto">
+      <!-- Stats Overview -->
+      <div class="admin-grid">
+        <div class="admin-card">
+          <h3>Total Users</h3>
+          <div class="value" id="adminTotalUsers">0</div>
+        </div>
+        <div class="admin-card">
+          <h3>Total Coins Earned</h3>
+          <div class="value" id="adminTotalCoins">0</div>
+        </div>
+        <div class="admin-card">
+          <h3>Pending Withdrawals</h3>
+          <div class="value" id="adminPendingWithdrawals">0</div>
+        </div>
+        <div class="admin-card">
+          <h3>Revenue (Est.)</h3>
+          <div class="value" id="adminRevenue">₹0</div>
+        </div>
+      </div>
+      
+      <!-- Game Controls -->
+      <div class="card mb-6">
+        <h2 class="font-bold mb-4">Game Settings</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Game 1 Settings -->
+          <div>
+            <div class="font-bold mb-2">Temple Runner</div>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-sm text-secondary">Ad Frequency:</span>
+              <input type="range" min="1" max="5" value="2" class="w-full" id="game1Freq">
+              <span id="game1FreqVal">2 min</span>
+            </div>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-sm text-secondary">Coins/Ad:</span>
+              <input type="range" min="10" max="100" value="20" class="w-full" id="game1Coins">
+              <span id="game1CoinsVal">20</span>
+            </div>
+            <label class="flex items-center gap-2">
+              <input type="checkbox" id="game1Active" checked>
+              <span class="text-sm">Active</span>
+            </label>
+          </div>
+          
+          <!-- Game 2 Settings -->
+          <div>
+            <div class="font-bold mb-2">Subway Dash</div>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-sm text-secondary">Ad Frequency:</span>
+              <input type="range" min="1" max="5" value="2" class="w-full" id="game2Freq">
+              <span id="game2FreqVal">2 min</span>
+            </div>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-sm text-secondary">Coins/Ad:</span>
+              <input type="range" min="10" max="100" value="20" class="w-full" id="game2Coins">
+              <span id="game2CoinsVal">20</span>
+            </div>
+            <label class="flex items-center gap-2">
+              <input type="checkbox" id="game2Active" checked>
+              <span class="text-sm">Active</span>
+            </label>
+          </div>
+          
+          <!-- Game 3 Settings -->
+          <div>
+            <div class="font-bold mb-2">Flappy Coins</div>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-sm text-secondary">Ad Frequency:</span>
+              <input type="range" min="1" max="5" value="2" class="w-full" id="game3Freq">
+              <span id="game3FreqVal">2 min</span>
+            </div>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-sm text-secondary">Coins/Ad:</span>
+              <input type="range" min="10" max="100" value="20" class="w-full" id="game3Coins">
+              <span id="game3CoinsVal">20</span>
+            </div>
+            <label class="flex items-center gap-2">
+              <input type="checkbox" id="game3Active" checked>
+              <span class="text-sm">Active</span>
+            </label>
+          </div>
+          
+          <!-- Game 4 Settings -->
+          <div>
+            <div class="font-bold mb-2">City Driver</div>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-sm text-secondary">Ad Frequency:</span>
+              <input type="range" min="1" max="5" value="2" class="w-full" id="game4Freq">
+              <span id="game4FreqVal">2 min</span>
+            </div>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-sm text-secondary">Coins/Ad:</span>
+              <input type="range" min="10" max="100" value="20" class="w-full" id="game4Coins">
+              <span id="game4CoinsVal">20</span>
+            </div>
+            <label class="flex items-center gap-2">
+              <input type="checkbox" id="game4Active" checked>
+              <span class="text-sm">Active</span>
+            </label>
+          </div>
+        </div>
+        <button id="saveGameSettings" class="btn mt-4" style="width: auto;">Save Settings</button>
+      </div>
+      
+      <!-- Withdrawal Management -->
+      <div class="card">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="font-bold">Withdrawal Requests</h2>
+          <select id="withdrawalFilter" class="input-field" style="width: auto; padding: 0.4rem 0.75rem;">
+            <option value="pending">Pending</option>
+            <option value="all">All</option>
+            <option value="approved">Approved</option>
+            <option value="paid">Paid</option>
+          </select>
+        </div>
+        
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>User</th>
+                <th>Amount</th>
+                <th>Method</th>
+                <th>Details</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="withdrawalTableBody">
+              <!-- Withdrawals loaded via JS -->
+              <tr>
+                <td colspan="7" class="text-center py-4 text-secondary">No withdrawal requests</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== BOTTOM NAVIGATION (visible on main screens) ===== -->
+  <nav id="bottomNav" class="nav-bar hidden">
+    <a href="#" class="nav-item active" data-screen="home">
+      <div class="nav-icon">🏠</div>
+      <span>Home</span>
+    </a>
+    <a href="#" class="nav-item" data-screen="games">
+      <div class="nav-icon">🎮</div>
+      <span>Games</span>
+    </a>
+    <a href="#" class="nav-item" data-screen="spin">
+      <div class="nav-icon">🎡</div>
+      <span>Spin</span>
+    </a>
+    <a href="#" class="nav-item" data-screen="wallet">
+      <div class="nav-icon">💰</div>
+      <span>Wallet</span>
+    </a>
+    <a href="#" class="nav-item" data-screen="profile">
+      <div class="nav-icon">👤</div>
+      <span>Profile</span>
+    </a>
+  </nav>
+
+  <script>
+    // ===== FIREBASE CONFIGURATION =====
+    const firebaseConfig = {
+      apiKey: "AIzaSyCOACDGtwol8RJKwMlToOo4hZ9Wo40ps64",
+      authDomain: "earning-money-e5b27.firebaseapp.com",
+      databaseURL: "https://earning-money-e5b27-default-rtdb.firebaseio.com",
+      projectId: "earning-money-e5b27",
+      storageBucket: "earning-money-e5b27.firebasestorage.app",
+      messagingSenderId: "984089140049",
+      appId: "1:984089140049:web:c4e4a66973dbdc61b99170"
+    };
+    
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const database = firebase.database();
+    
+    // ===== APP STATE =====
+    const AppState = {
+      currentUser: null,
+      currentScreen: 'splash',
+      currentGame: null,
+      gameLoop: null,
+      adTimer: null,
+      lastAdTime: 0,
+      coinBalance: 0,
+      spinCooldown: 0,
+      checkinData: { lastClaimed: 0, streak: 0 },
+      adminMode: false,
+      gameSettings: {
+        game1: { name: "Temple Runner", frequency: 2, coinsPerAd: 20, active: true },
+        game2: { name: "Subway Dash", frequency: 2, coinsPerAd: 20, active: true },
+        game3: { name: "Flappy Coins", frequency: 2, coinsPerAd: 20, active: true },
+        game4: { name: "City Driver", frequency: 2, coinsPerAd: 20, active: true }
+      }
+    };
+    
+    // ===== UTILITY FUNCTIONS =====
+    const $ = id => document.getElementById(id);
+    const showToast = (message, type = 'success') => {
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      toast.innerHTML = `<span>${type === 'success' ? '✓' : type === 'error' ? '✕' : '⚠'}</span> ${message}`;
+      $('toastContainer').appendChild(toast);
+      setTimeout(() => toast.remove(), 3000);
+    };
+    
+    const formatCoins = coins => coins.toLocaleString();
+    const formatRupees = coins => (coins / 100).toFixed(2);
+    const formatTime = seconds => {
+      const h = Math.floor(seconds / 3600).toString().padStart(2, '0');
+      const m = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
+      const s = (seconds % 60).toString().padStart(2, '0');
+      return `${h}:${m}:${s}`;
+    };
+    
+    // Generate unique referral code
+    const generateReferralCode = () => {
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      let code = 'GAME-';
+      for (let i = 0; i < 4; i++) {
+        code += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return code;
+    };
+    
+    // ===== AUTHENTICATION =====
+    const setupAuth = () => {
+      // Check auth state
+      auth.onAuthStateChanged(user => {
+        if (user) {
+          AppState.currentUser = user;
+          loadUserData();
+          showScreen('home');
+        } else {
+          AppState.currentUser = null;
+          showScreen('auth');
+        }
+      });
+      
+      // Login
+      $('loginBtn').addEventListener('click', async () => {
+        const email = $('emailInput').value.trim();
+        const password = $('passwordInput').value;
+        
+        if (!email || !password) {
+          showToast('Please enter email and password', 'error');
+          return;
+        }
+        
+        try {
+          await auth.signInWithEmailAndPassword(email, password);
+          showToast('Welcome back!');
+        } catch (error) {
+          showToast(error.message, 'error');
+        }
+      });
+      
+      // Signup
+      $('signupBtn').addEventListener('click', async () => {
+        const email = $('emailInput').value.trim();
+        const password = $('passwordInput').value;
+        
+        if (!email || password.length < 6) {
+          showToast('Enter valid email and password (6+ chars)', 'error');
+          return;
+        }
+        
+        try {
+          const result = await auth.createUserWithEmailAndPassword(email, password);
+          // Create user profile in database
+          const referralCode = generateReferralCode();
+          await database.ref(`users/${result.user.uid}`).set({
+            profile: {
+              name: email.split('@')[0],
+              email: email,
+              createdAt: Date.now(),
+              referralCode: referralCode
+            },
+            coins: 0,
+            totalEarnings: 0,
+            dailyCheckin: { lastClaimed: 0, streak: 0 },
+            referrals: []
+          });
+          showToast('Account created! Welcome 🎉');
+        } catch (error) {
+          showToast(error.message, 'error');
+        }
+      });
+      
+      // Google Sign-in
+      $('googleBtn').addEventListener('click', async () => {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        try {
+          const result = await auth.signInWithPopup(provider);
+          // Check if new user
+          const snapshot = await database.ref(`users/${result.user.uid}`).once('value');
+          if (!snapshot.exists()) {
+            const referralCode = generateReferralCode();
+            await database.ref(`users/${result.user.uid}`).set({
+              profile: {
+                name: result.user.displayName || 'Player',
+                email: result.user.email,
+                photoURL: result.user.photoURL,
+                createdAt: Date.now(),
+                referralCode: referralCode
+              },
+              coins: 100, // Welcome bonus
+              totalEarnings: 100,
+              dailyCheckin: { lastClaimed: 0, streak: 0 },
+              referrals: []
+            });
+            showToast('Welcome! +100 coins bonus 🎁');
+          } else {
+            showToast('Welcome back!');
+          }
+        } catch (error) {
+          showToast(error.message, 'error');
+        }
+      });
+      
+      // Forgot password
+      $('forgotPassword').addEventListener('click', async (e) => {
+        e.preventDefault();
+        const email = $('emailInput').value.trim();
+        if (!email) {
+          showToast('Enter your email first', 'warning');
+          return;
+        }
+        try {
+          await auth.sendPasswordResetEmail(email);
+          showToast('Password reset link sent! Check your email');
+        } catch (error) {
+          showToast(error.message, 'error');
+        }
+      });
+      
+      // Logout
+      $('logoutBtn').addEventListener('click', async () => {
+        await auth.signOut();
+        showToast('Logged out successfully');
+      });
+    };
+    
+    // ===== USER DATA MANAGEMENT =====
+    const loadUserData = async () => {
+      if (!AppState.currentUser) return;
+      
+      const uid = AppState.currentUser.uid;
+      const userRef = database.ref(`users/${uid}`);
+      
+      // Real-time coin balance listener
+      userRef.child('coins').on('value', snapshot => {
+        const coins = snapshot.val() || 0;
+        AppState.coinBalance = coins;
+        $('coinAmount').textContent = formatCoins(coins);
+        $('gameCoinBalance').textContent = formatCoins(coins);
+        $('walletBalance').textContent = `${formatCoins(coins)} coins`;
+        $('rupeeValue').textContent = formatRupees(coins);
+      });
+      
+      // Load profile data
+      const profileSnap = await userRef.child('profile').once('value');
+      const profile = profileSnap.val() || {};
+      $('userName').textContent = profile.name || 'Player';
+      $('profileName').textContent = profile.name || 'Player';
+      $('profileEmail').textContent = profile.email || '';
+      $('referralCode').value = profile.referralCode || generateReferralCode();
+      
+      // Load check-in data
+      const checkinSnap = await userRef.child('dailyCheckin').once('value');
+      AppState.checkinData = checkinSnap.val() || { lastClaimed: 0, streak: 0 };
+      updateCheckinUI();
+      
+      // Load total earnings
+      userRef.child('totalEarnings').on('value', snapshot => {
+        const total = snapshot.val() || 0;
+        $('totalEarnings').textContent = `${formatCoins(total)} coins`;
+        $('profileTotalEarned').textContent = `${formatCoins(total)} coins`;
+      });
+      
+      // Load referral count
+      userRef.child('referrals').on('value', snapshot => {
+        const referrals = snapshot.val() || [];
+        $('referralCount').textContent = referrals.length;
+        $('profileReferrals').textContent = referrals.length;
+      });
+      
+      // Load transaction history
+      loadTransactions();
+    };
+    
+    const updateCoinBalance = async (amount, type, metadata = {}) => {
+      if (!AppState.currentUser) return;
+      
+      const uid = AppState.currentUser.uid;
+      const userRef = database.ref(`users/${uid}`);
+      
+      // Update coins atomically
+      await userRef.update({
+        coins: firebase.database.ServerValue.increment(amount),
+        totalEarnings: amount > 0 ? firebase.database.ServerValue.increment(amount) : null,
+        lastActivity: Date.now()
+      });
+      
+      // Log transaction
+      await database.ref('transactions').push({
+        userId: uid,
+        type: type, // 'earn', 'withdraw', 'bonus', 'referral', 'spin'
+        amount: Math.abs(amount),
+        coins: amount,
+        timestamp: Date.now(),
+        description: getTransactionDescription(type, metadata),
+        gameType: metadata.gameType || null
+      });
+      
+      showToast(`${amount > 0 ? '+' : ''}${amount} coins ${type === 'earn' ? 'earned' : 'updated'}`);
+    };
+    
+    const getTransactionDescription = (type, meta) => {
+      const descriptions = {
+        earn: `Earned from ${meta.gameType || 'game'} ad`,
+        daily_checkin: `Day ${meta.day} check-in bonus`,
+        spin_wheel: `Wheel spin prize: ${meta.prize} coins`,
+        referral: meta.isReferrer ? 'Referral bonus (500 coins)' : 'Welcome bonus (100 coins)',
+        withdraw: `Withdrawal request: ₹${meta.amount}`,
+        bonus: meta.reason || 'Bonus coins'
+      };
+      return descriptions[type] || type;
+    };
+    
+    // ===== SCREEN NAVIGATION =====
+    const showScreen = (screenName) => {
+      // Hide all screens
+      ['splashScreen', 'authScreen', 'homeScreen', 'gamesScreen', 'gamePlayScreen', 
+       'spinScreen', 'walletScreen', 'profileScreen', 'adminScreen'].forEach(id => {
+        $(id).classList.add('hidden');
+      });
+      
+      // Show target screen
+      if (screenName === 'splash') {
+        $('splashScreen').classList.remove('hidden');
+      } else if (screenName === 'auth') {
+        $('authScreen').classList.remove('hidden');
+        $('bottomNav').classList.add('hidden');
+        $('coinBalance').classList.add('hidden');
+      } else if (screenName === 'game') {
+        $('gamePlayScreen').classList.remove('hidden');
+        $('bottomNav').classList.add('hidden');
+        $('coinBalance').classList.remove('hidden');
+      } else {
+        // Main app screens
+        $(`${screenName}Screen`).classList.remove('hidden');
+        $('bottomNav').classList.remove('hidden');
+        $('coinBalance').classList.remove('hidden');
+        
+        // Update nav active state
+        document.querySelectorAll('.nav-item').forEach(item => {
+          item.classList.toggle('active', item.dataset.screen === screenName);
+        });
+      }
+      
+      AppState.currentScreen = screenName;
+      
+      // Special screen setups
+      if (screenName === 'spin') setupSpinWheel();
+      if (screenName === 'wallet') loadTransactions();
+      if (screenName === 'admin') loadAdminData();
+    };
+    
+    // Setup navigation listeners
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.preventDefault();
+        const screen = item.dataset.screen;
+        showScreen(screen);
+      });
+    });
+    
+    // Quick action cards
+    $('gamesCard').addEventListener('click', () => showScreen('games'));
+    $('spinCard').addEventListener('click', () => showScreen('spin'));
+    $('walletCard').addEventListener('click', () => showScreen('wallet'));
+    $('profileCard').addEventListener('click', () => showScreen('profile'));
+    
+    // Back buttons
+    ['backToHome', 'backToHome2', 'backToHome3', 'backToHome4'].forEach(id => {
+      $(id)?.addEventListener('click', () => showScreen('home'));
+    });
+    
+    $('exitGame').addEventListener('click', () => {
+      stopGame();
+      showScreen('games');
+    });
+    
+    $('homeFromGameBtn').addEventListener('click', () => {
+      stopGame();
+      showScreen('home');
+    });
+    
+    // ===== DAILY CHECK-IN SYSTEM =====
+    const updateCheckinUI = () => {
+      const now = Date.now();
+      const lastClaimed = AppState.checkinData.lastClaimed || 0;
+      const streak = AppState.checkinData.streak || 0;
+      
+      // Calculate current day (1-7)
+      const today = new Date();
+      const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 86400000);
+      const currentDay = ((dayOfYear - 1) % 7) + 1;
+      
+      $('checkinDay').textContent = currentDay;
+      $('checkinReward').textContent = [10,20,30,40,50,60,100][currentDay-1];
+      
+      // Check if already claimed today
+      const lastClaimDate = lastClaimed ? new Date(lastClaimed).getDate() : null;
+      const todayDate = today.getDate();
+      
+      if (lastClaimDate === todayDate) {
+        $('checkinBtn').disabled = true;
+        $('checkinBtn').textContent = 'Claimed ✓';
+      } else {
+        $('checkinBtn').disabled = false;
+        $('checkinBtn').textContent = 'Claim';
+      }
+      
+      // Update checkin grid visualization
+      document.querySelectorAll('.checkin-day').forEach((el, index) => {
+        el.classList.remove('claimed', 'today');
+        if (index + 1 <= streak) el.classList.add('claimed');
+        if (index + 1 === currentDay) el.classList.add('today');
+      });
+    };
+    
+    $('checkinBtn').addEventListener('click', async () => {
+      if (!AppState.currentUser) return;
+      
+      const now = Date.now();
+      const lastClaimed = AppState.checkinData.lastClaimed || 0;
+      
+      // Check if already claimed today
+      if (lastClaimed && new Date(lastClaimed).getDate() === new Date(now).getDate()) {
+        showToast('Already claimed today!', 'warning');
+        return;
+      }
+      
+      // Calculate reward based on streak
+      const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
+      const currentDay = ((dayOfYear - 1) % 7) + 1;
+      const reward = [10,20,30,40,50,60,100][currentDay-1];
+      
+      // Update streak
+      const lastClaimDate = lastClaimed ? new Date(lastClaimed).getDate() : null;
+      const todayDate = new Date(now).getDate();
+      const newStreak = (lastClaimDate && todayDate - lastClaimDate === 1) 
+        ? Math.min(AppState.checkinData.streak + 1, 7) 
+        : 1;
+      
+      // Update Firebase
+      const uid = AppState.currentUser.uid;
+      await database.ref(`users/${uid}/dailyCheckin`).update({
+        lastClaimed: now,
+        streak: newStreak
+      });
+      
+      // Award coins
+      await updateCoinBalance(reward, 'daily_checkin', { day: currentDay });
+      
+      // Update local state
+      AppState.checkinData = { lastClaimed: now, streak: newStreak };
+      updateCheckinUI();
+      
+      showToast(`+${reward} coins claimed! Streak: ${newStreak}/7 days`);
+    });
+    
+    // ===== SPIN WHEEL SYSTEM =====
+    const setupSpinWheel = () => {
+      // Create wheel segments
+      const wheel = $('wheel');
+      wheel.innerHTML = '';
+      const prizes = [10, 20, 30, 50, 100, 200, 500, 1000];
+      const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FECA57', '#FF9FF3', '#FF6B6B', '#54A0FF'];
+      
+      prizes.forEach((prize, index) => {
+        const segment = document.createElement('div');
+        segment.className = 'wheel-segment';
+        segment.style.transform = `rotate(${index * 45}deg)`;
+        segment.style.background = colors[index];
+        segment.innerHTML = `<div style="transform: rotate(-${index * 45}deg);">${prize}🪙</div>`;
+        wheel.appendChild(segment);
+      });
+      
+      // Setup spin button
+      $('spinBtn').onclick = handleSpin;
+      $('adSpinBtn').onclick = () => {
+        showToast('Ad would play here - +1 free spin awarded', 'warning');
+        handleSpin(); // Demo: just spin
+      };
+      
+      // Update timer
+      updateSpinTimer();
+      setInterval(updateSpinTimer, 1000);
+    };
+    
+    const updateSpinTimer = () => {
+      if (!AppState.currentUser) return;
+      
+      const now = Date.now();
+      const cooldown = AppState.spinCooldown || 0;
+      
+      if (cooldown > now) {
+        const remaining = Math.ceil((cooldown - now) / 1000);
+        $('spinTimer').textContent = formatTime(remaining);
+        $('spinBtn').disabled = true;
+      } else {
+        $('spinTimer').textContent = 'Ready!';
+        $('spinBtn').disabled = false;
+      }
+    };
+    
+    const handleSpin = async () => {
+      if (AppState.spinCooldown > Date.now()) {
+        showToast('Spin not ready yet', 'warning');
+        return;
+      }
+      
+      // Disable button during spin
+      $('spinBtn').disabled = true;
+      
+      // Random prize (weighted: lower prizes more common)
+      const prizes = [10, 20, 30, 50, 100, 200, 500, 1000];
+      const weights = [30, 25, 20, 15, 7, 2, 0.9, 0.1];
+      const totalWeight = weights.reduce((a,b) => a+b);
+      let random = Math.random() * totalWeight;
+      let prizeIndex = 0;
+      
+      for (let i = 0; i < weights.length; i++) {
+        random -= weights[i];
+        if (random <= 0) {
+          prizeIndex = i;
+          break;
+        }
+      }
+      
+      const prize = prizes[prizeIndex];
+      
+      // Animate wheel
+      const wheel = $('wheel');
+      const rotations = 5; // Full spins
+      const segmentAngle = 360 / 8;
+      const targetAngle = rotations * 360 + (prizeIndex * segmentAngle) + (segmentAngle / 2);
+      
+      wheel.style.transition = 'transform 3s cubic-bezier(0.17, 0.67, 0.12, 0.99)';
+      wheel.style.transform = `rotate(${targetAngle}deg)`;
+      
+      // After animation completes
+      setTimeout(async () => {
+        // Award coins
+        await updateCoinBalance(prize, 'spin_wheel', { prize });
+        
+        // Set cooldown (4 hours)
+        AppState.spinCooldown = Date.now() + (4 * 60 * 60 * 1000);
+        updateSpinTimer();
+        
+        // Reset wheel
+        wheel.style.transition = 'none';
+        wheel.style.transform = 'rotate(0deg)';
+        
+        showToast(`🎉 You won ${prize} coins!`);
+      }, 3000);
+    };
+    
+    // ===== GAME SYSTEM =====
+    const startGame = (gameId) => {
+      // Stop any running game
+      stopGame();
+      
+      // Setup canvas
+      const canvas = $('gameCanvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = 300;
+      canvas.height = 500;
+      
+      // Game configuration
+      const config = AppState.gameSettings[`game${gameId}`];
+      if (!config.active) {
+        showToast('This game is temporarily disabled', 'warning');
+        return;
+      }
+      
+      AppState.currentGame = {
+        id: gameId,
+        config: config,
+        ctx: ctx,
+        player: { x: 150, y: 400, width: 30, height: 40, velocityY: 0, jumping: false },
+        obstacles: [],
+        coins: [],
+        score: 0,
+        speed: 3,
+        lastObstacle: 0,
+        adTriggered: false,
+        gameOver: false
+      };
+      
+      // Setup controls
+      let touchStartX = 0;
+      let touchStartY = 0;
+      
+      canvas.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        if (gameId === 3) handleFlappyTap(); // Flappy Bird special case
+      }, { passive: false });
+      
+      canvas.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
+      
+      canvas.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        if (AppState.currentGame?.gameOver) return;
+        
+        const touchEndX = e.changedTouches[0].clientX;
+        const touchEndY = e.changedTouches[0].clientY;
+        const dx = touchEndX - touchStartX;
+        const dy = touchEndY - touchStartY;
+        
+        // Swipe detection
+        if (Math.abs(dx) > 30 || Math.abs(dy) > 30) {
+          if (Math.abs(dx) > Math.abs(dy)) {
+            // Horizontal swipe
+            if (dx > 0 && AppState.currentGame.player.x < 240) {
+              AppState.currentGame.player.x += 60; // Move right
+            } else if (dx < 0 && AppState.currentGame.player.x > 60) {
+              AppState.currentGame.player.x -= 60; // Move left
+            }
+          } else {
+            // Vertical swipe
+            if (dy < 0 && !AppState.currentGame.player.jumping) {
+              AppState.currentGame.player.velocityY = -12; // Jump
+              AppState.currentGame.player.jumping = true;
+            }
+          }
+        } else {
+          // Tap = jump for runner games
+          if (gameId !== 3 && !AppState.currentGame.player.jumping) {
+            AppState.currentGame.player.velocityY = -12;
+            AppState.currentGame.player.jumping = true;
+          }
+        }
+      }, { passive: false });
+      
+      // Start ad timer
+      startAdTimer();
+      
+      // Start game loop
+      let lastTime = 0;
+      const gameLoop = (timestamp) => {
+        if (!AppState.currentGame || AppState.currentGame.gameOver) return;
+        
+        const deltaTime = timestamp - lastTime;
+        lastTime = timestamp;
+        
+        updateGame(deltaTime);
+        renderGame();
+        
+        AppState.gameLoop = requestAnimationFrame(gameLoop);
+      };
+      
+      AppState.gameLoop = requestAnimationFrame(gameLoop);
+      
+      // Show game screen
+      $('gameTitle').textContent = config.name;
+      showScreen('game');
+      
+      // Update controls hint based on game
+      const hints = {
+        1: "Swipe ←/→ to change lanes • Swipe ↑ to jump • Swipe ↓ to slide",
+        2: "Swipe ←/→ to change lanes • Swipe ↑ to jump • Double swipe ↑ for high jump",
+        3: "Tap anywhere to flap • Avoid pipes • Don't touch top/bottom",
+        4: "Tap left/right side to change lanes • Avoid traffic cars"
+      };
+      $('gameControlsHint').textContent = hints[gameId] || "Swipe to control";
+    };
+    
+    const startAdTimer = () => {
+      if (AppState.adTimer) clearInterval(AppState.adTimer);
+      
+      const config = AppState.currentGame.config;
+      const interval = config.frequency * 60 * 1000; // minutes to ms
+      
+      AppState.adTimer = setInterval(() => {
+        if (AppState.currentGame && !AppState.currentGame.adTriggered && !AppState.currentGame.gameOver) {
+          triggerBackgroundAd();
+        }
+      }, interval);
+    };
+    
+    const triggerBackgroundAd = async () => {
+      if (!AppState.currentGame) return;
+      
+      AppState.currentGame.adTriggered = true;
+      showToast('🎁 Ad playing in background...', 'warning');
+      
+      // Simulate ad delay (5-10 seconds)
+      await new Promise(resolve => setTimeout(resolve, 7000));
+      
+      // Award coins
+      const coins = AppState.currentGame.config.coinsPerAd;
+      await updateCoinBalance(coins, 'earn', { gameType: AppState.currentGame.config.name });
+      
+      AppState.currentGame.adTriggered = false;
+      showToast(`+${coins} coins added!`, 'success');
+    };
+    
+    const updateGame = (deltaTime) => {
+      const game = AppState.currentGame;
+      if (!game || game.gameOver) return;
+      
+      // Update player physics (gravity for jump)
+      if (game.player.jumping) {
+        game.player.velocityY += 0.6; // Gravity
+        game.player.y += game.player.velocityY;
+        
+        // Land on ground
+        if (game.player.y >= 400) {
+          game.player.y = 400;
+          game.player.velocityY = 0;
+          game.player.jumping = false;
+        }
+      }
+      
+      // Spawn obstacles
+      if (Date.now() - game.lastObstacle > 1500 - game.speed * 50) {
+        spawnObstacle(game);
+        game.lastObstacle = Date.now();
+      }
+      
+      // Move obstacles
+      game.obstacles.forEach(obs => {
+        obs.x -= game.speed;
+      });
+      
+      // Remove off-screen obstacles
+      game.obstacles = game.obstacles.filter(obs => obs.x > -50);
+      
+      // Check collisions
+      checkCollisions(game);
+      
+      // Update score
+      game.score += Math.floor(game.speed * 0.1);
+      
+      // Increase difficulty
+      if (game.score % 500 === 0) {
+        game.speed = Math.min(game.speed + 0.3, 8);
+      }
+    };
+    
+    const spawnObstacle = (game) => {
+      const types = ['block', 'gap', 'low', 'coin'];
+      const type = types[Math.floor(Math.random() * types.length)];
+      
+      game.obstacles.push({
+        type: type,
+        x: 320,
+        y: type === 'low' ? 350 : (type === 'gap' ? 450 : 400),
+        width: type === 'gap' ? 60 : 30,
+        height: type === 'gap' ? 100 : (type === 'low' ? 50 : 60),
+        passed: false
+      });
+      
+      // Occasionally spawn coin
+      if (Math.random() < 0.3) {
+        game.coins.push({
+          x: 320,
+          y: 350 + Math.random() * 100,
+          width: 20,
+          height: 20,
+          collected: false,
+          value: Math.random() < 0.1 ? 3 : (Math.random() < 0.3 ? 2 : 1)
+        });
+      }
+    };
+    
+    const checkCollisions = (game) => {
+      const player = game.player;
+      
+      // Check obstacle collisions
+      game.obstacles.forEach(obs => {
+        if (obs.passed) return;
+        
+        // Simple AABB collision
+        if (player.x < obs.x + obs.width &&
+            player.x + player.width > obs.x &&
+            player.y < obs.y + obs.height &&
+            player.y + player.height > obs.y) {
+          
+          // Special handling for gaps (must jump)
+          if (obs.type === 'gap' && player.y < 380) {
+            // Player is in air over gap - safe
+            return;
+          }
+          
+          // Collision!
+          gameOver(game);
+        }
+        
+        // Mark as passed for scoring
+        if (obs.x + obs.width < player.x && !obs.passed) {
+          obs.passed = true;
+          game.score += 10;
+        }
+      });
+      
+      // Check coin collections
+      game.coins.forEach(coin => {
+        if (coin.collected) return;
+        
+        if (player.x < coin.x + coin.width &&
+            player.x + player.width > coin.x &&
+            player.y < coin.y + coin.height &&
+            player.y + player.height > coin.y) {
+          
+          coin.collected = true;
+          game.score += coin.value * 5;
+          // Visual feedback would go here
+        }
+      });
+      
+      // Remove collected coins
+      game.coins = game.coins.filter(coin => !coin.collected);
+      
+      // Check boundaries
+      if (player.y > 480 || player.y < 0) {
+        gameOver(game);
+      }
+    };
+    
+    const renderGame = () => {
+      const game = AppState.currentGame;
+      if (!game) return;
+      
+      const ctx = game.ctx;
+      const canvas = ctx.canvas;
+      
+      // Clear canvas
+      ctx.fillStyle = '#0a0a0a';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      // Draw background (parallax effect)
+      ctx.fillStyle = '#1a1a2e';
+      for (let i = 0; i < 5; i++) {
+        ctx.fillRect((game.score * 0.5 + i * 100) % canvas.width, 50 + i * 30, 80, 20);
+      }
+      
+      // Draw ground
+      ctx.fillStyle = '#3d2b1f';
+      ctx.fillRect(0, 450, canvas.width, 50);
+      
+      // Draw coins
+      game.coins.forEach(coin => {
+        ctx.fillStyle = coin.value === 3 ? '#3b82f6' : (coin.value === 2 ? '#f97316' : '#fbbf24');
+        ctx.beginPath();
+        ctx.arc(coin.x + 10, coin.y + 10, 10, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#fff';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      });
+      
+      // Draw obstacles
+      game.obstacles.forEach(obs => {
+        if (obs.type === 'block') {
+          ctx.fillStyle = '#78350f';
+          ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
+          // Stone texture
+          ctx.fillStyle = '#92400e';
+          ctx.fillRect(obs.x + 5, obs.y + 5, obs.width - 10, obs.height - 10);
+        } else if (obs.type === 'gap') {
+          ctx.fillStyle = '#0f172a';
+          ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
+          // Danger stripes
+          ctx.fillStyle = '#ef4444';
+          for (let i = 0; i < 3; i++) {
+            ctx.fillRect(obs.x + i * 20, obs.y + 20, 15, 10);
+          }
+        } else if (obs.type === 'low') {
+          ctx.fillStyle = '#064e3b';
+          ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
+          // Branch details
+          ctx.fillStyle = '#065f46';
+          ctx.beginPath();
+          ctx.arc(obs.x + 15, obs.y + 25, 8, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      });
+      
+      // Draw player (simple adventurer)
+      const player = game.player;
+      
+      // Body
+      ctx.fillStyle = '#8b5cf6';
+      ctx.fillRect(player.x, player.y, player.width, player.height - 10);
+      
+      // Head
+      ctx.fillStyle = '#fca5a5';
+      ctx.beginPath();
+      ctx.arc(player.x + 15, player.y - 5, 12, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Hat
+      ctx.fillStyle = '#78350f';
+      ctx.beginPath();
+      ctx.moveTo(player.x + 3, player.y - 5);
+      ctx.lineTo(player.x + 27, player.y - 5);
+      ctx.lineTo(player.x + 15, player.y - 20);
+      ctx.closePath();
+      ctx.fill();
+      
+      // Draw score
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 18px Poppins';
+      ctx.textAlign = 'center';
+      ctx.fillText(`Score: ${game.score}`, canvas.width / 2, 30);
+      
+      // Draw distance
+      ctx.font = '14px Poppins';
+      ctx.fillStyle = '#9ca3af';
+      ctx.fillText(`Distance: ${Math.floor(game.score / 10)}m`, canvas.width / 2, 50);
+    };
+    
+    const gameOver = (game) => {
+      game.gameOver = true;
+      stopGame();
+      
+      // Show game over screen
+      $('finalDistance').textContent = `${Math.floor(game.score / 10)}m`;
+      $('finalCoins').textContent = `+${Math.floor(game.score / 50) * 5}`;
+      $('finalBalance').textContent = formatCoins(AppState.coinBalance);
+      
+      $('gameOverOverlay').classList.remove('hidden');
+    };
+    
+    const stopGame = () => {
+      if (AppState.gameLoop) {
+        cancelAnimationFrame(AppState.gameLoop);
+        AppState.gameLoop = null;
+      }
+      if (AppState.adTimer) {
+        clearInterval(AppState.adTimer);
+        AppState.adTimer = null;
+      }
+      AppState.currentGame = null;
+    };
+    
+    // Setup game starters
+    [1,2,3,4].forEach(gameId => {
+      $(`game${gameId}`).addEventListener('click', () => startGame(gameId));
+    });
+    
+    $('playAgainBtn').addEventListener('click', () => {
+      $('gameOverOverlay').classList.add('hidden');
+      if (AppState.currentGame?.id) {
+        startGame(AppState.currentGame.id);
+      }
+    });
+    
+    // Special handler for Flappy Bird (game 3)
+    const handleFlappyTap = () => {
+      if (!AppState.currentGame || AppState.currentGame.id !== 3) return;
+      if (AppState.currentGame.gameOver) return;
+      
+      // Flappy Bird physics: strong upward impulse
+      AppState.currentGame.player.velocityY = -10;
+    };
+    
+    // ===== WITHDRAWAL SYSTEM =====
+    $('withdrawBtn').addEventListener('click', () => {
+      $('withdrawModal').classList.remove('hidden');
+    });
+    
+    $('closeWithdraw').addEventListener('click', () => {
+      $('withdrawModal').classList.add('hidden');
+    });
+    
+    // Payment method toggle
+    document.querySelectorAll('.method-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.method-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        const method = btn.dataset.method;
+        $('upiForm').classList.toggle('hidden', method !== 'upi');
+        $('bankForm').classList.toggle('hidden', method !== 'bank');
+      });
+    });
+    
+    $('submitWithdraw').addEventListener('click', async () => {
+      const amount = parseInt($('withdrawAmount').value);
+      const method = document.querySelector('.method-btn.active').dataset.method;
+      
+      if (!amount || amount < (method === 'upi' ? 50 : 100)) {
+        showToast(`Minimum withdrawal: ₹${method === 'upi' ? 50 : 100}`, 'error');
+        return;
+      }
+      
+      const coinsNeeded = amount * 100; // 100 coins = ₹1
+      if (AppState.coinBalance < coinsNeeded) {
+        showToast(`Need ${formatCoins(coinsNeeded)} coins (you have ${formatCoins(AppState.coinBalance)})`, 'error');
+        return;
+      }
+      
+      // Validate payment details
+      if (method === 'upi') {
+        const upiId = $('upiId').value.trim();
+        if (!upiId.includes('@')) {
+          showToast('Enter valid UPI ID', 'error');
+          return;
+        }
+      } else {
+        const accountNumber = $('accountNumber').value.trim();
+        const ifscCode = $('ifscCode').value.trim();
+        if (accountNumber.length < 8 || !/^[A-Z]{4}0[A-Z0-9]{6}$/.test(ifscCode)) {
+          showToast('Enter valid bank details', 'error');
+          return;
+        }
+      }
+      
+      // Create withdrawal request
+      const uid = AppState.currentUser.uid;
+      const withdrawalRef = database.ref('withdrawals').push();
+      
+      await withdrawalRef.set({
+        userId: uid,
+        amount: amount,
+        coins: coinsNeeded,
+        method: method,
+        details: method === 'upi' 
+          ? { upiId: $('upiId').value.trim() }
+          : {
+              accountHolderName: $('accountName').value.trim(),
+              accountNumber: $('accountNumber').value.trim(),
+              ifscCode: $('ifscCode').value.trim(),
+              bankName: $('bankName').value.trim()
+            },
+        status: 'pending',
+        requestedAt: Date.now()
+      });
+      
+      // Deduct coins immediately (reserved)
+      await updateCoinBalance(-coinsNeeded, 'withdraw', { amount });
+      
+      // Close modal and show success
+      $('withdrawModal').classList.add('hidden');
+      $('withdrawAmount').value = '';
+      showToast('Withdrawal request submitted! Check status in history', 'success');
+      
+      // Refresh transaction list
+      loadTransactions();
+    });
+    
+    // ===== TRANSACTION HISTORY =====
+    const loadTransactions = async () => {
+      if (!AppState.currentUser) return;
+      
+      const uid = AppState.currentUser.uid;
+      const filter = $('txFilter')?.value || 'all';
+      
+      let query = database.ref('transactions')
+        .orderByChild('userId')
+        .equalTo(uid)
+        .limitToLast(20);
+      
+      const snapshot = await query.once('value');
+      const transactions = [];
+      
+      snapshot.forEach(child => {
+        const tx = child.val();
+        if (filter === 'all' || tx.type === filter) {
+          transactions.push({ id: child.key, ...tx });
+        }
+      });
+      
+      // Sort by timestamp descending
+      transactions.sort((a,b) => b.timestamp - a.timestamp);
+      
+      // Render
+      const container = $('transactionList');
+      if (transactions.length === 0) {
+        container.innerHTML = '<div class="text-center text-secondary py-4">No transactions yet</div>';
+        return;
+      }
+      
+      container.innerHTML = transactions.map(tx => {
+        const date = new Date(tx.timestamp).toLocaleDateString();
+        const time = new Date(tx.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        const isPositive = tx.coins > 0;
+        
+        return `
+          <div class="flex justify-between items-center py-3 border-b border-gray-700 last:border-0">
+            <div>
+              <div class="font-medium">${tx.description}</div>
+              <div class="text-xs text-secondary">${date} ${time}</div>
+            </div>
+            <div class="font-bold ${isPositive ? 'text-green-400' : 'text-red-400'}">
+              ${isPositive ? '+' : ''}${formatCoins(tx.coins)}
+            </div>
+          </div>
+        `;
+      }).join('');
+    };
+    
+    if ($('txFilter')) {
+      $('txFilter').addEventListener('change', loadTransactions);
+    }
+    
+    // ===== ADMIN PANEL =====
+    $('adminBtn').addEventListener('click', () => {
+      // Simple admin check (in production, use Firebase custom claims)
+      const adminEmails = ['admin@gameearn.com', 'saiko@gameearn.com'];
+      if (AppState.currentUser && adminEmails.includes(AppState.currentUser.email)) {
+        AppState.adminMode = true;
+        showScreen('admin');
+      } else {
+        showToast('Admin access denied', 'error');
+      }
+    });
+    
+    $('exitAdmin').addEventListener('click', () => {
+      AppState.adminMode = false;
+      showScreen('home');
+    });
+    
+    const loadAdminData = async () => {
+      if (!AppState.adminMode) return;
+      
+      // Load stats
+      const usersSnap = await database.ref('users').once('value');
+      const withdrawalsSnap = await database.ref('withdrawals').once('value');
+      
+      let totalCoins = 0;
+      let pendingCount = 0;
+      
+      withdrawalsSnap.forEach(child => {
+        const w = child.val();
+        if (w.status === 'pending') pendingCount++;
+        totalCoins += w.coins || 0;
+      });
+      
+      $('adminTotalUsers').textContent = usersSnap.numChildren();
+      $('adminTotalCoins').textContent = formatCoins(totalCoins);
+      $('adminPendingWithdrawals').textContent = pendingCount;
+      $('adminRevenue').textContent = `₹${formatRupees(totalCoins * 0.7)}`; // Est. 70% revenue share
+      
+      // Load withdrawals table
+      loadWithdrawalsTable();
+    };
+    
+    const loadWithdrawalsTable = async () => {
+      const filter = $('withdrawalFilter')?.value || 'pending';
+      let query = database.ref('withdrawals');
+      
+      if (filter !== 'all') {
+        query = query.orderByChild('status').equalTo(filter);
+      }
+      
+      const snapshot = await query.limitToLast(50).once('value');
+      const withdrawals = [];
+      
+      snapshot.forEach(child => {
+        withdrawals.push({ id: child.key, ...child.val() });
+      });
+      
+      // Sort by date descending
+      withdrawals.sort((a,b) => b.requestedAt - a.requestedAt);
+      
+      const tbody = $('withdrawalTableBody');
+      if (withdrawals.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" class="text-center py-4 text-secondary">No requests found</td></tr>';
+        return;
+      }
+      
+      tbody.innerHTML = withdrawals.map(w => {
+        // Get user email
+        const userEmail = w.userId ? (database.ref(`users/${w.userId}/profile/email`).once('value')
+          .then(snap => snap.val() || 'Unknown')) : 'Unknown';
+        
+        const details = w.method === 'upi' 
+          ? w.details?.upiId || 'N/A'
+          : `${w.details?.accountHolderName || 'N/A'}\n${w.details?.accountNumber || ''}`;
+        
+        return `
+          <tr>
+            <td>${w.userEmail || 'Loading...'}</td>
+            <td>₹${w.amount}</td>
+            <td>${w.method.toUpperCase()}</td>
+            <td style="max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${details}</td>
+            <td>${new Date(w.requestedAt).toLocaleDateString()}</td>
+            <td><span class="status-badge status-${w.status}">${w.status}</span></td>
+            <td>
+              <button class="action-btn approve" data-id="${w.id}" data-status="approved">✓</button>
+              <button class="action-btn reject" data-id="${w.id}" data-status="rejected">✕</button>
+              ${w.status === 'approved' ? `<button class="action-btn" style="background:#6B46C1" data-id="${w.id}" data-status="paid">Paid</button>` : ''}
+            </td>
+          </tr>
+        `;
+      }).join('');
+      
+      // Setup action buttons
+      document.querySelectorAll('.action-btn').forEach(btn => {
+        btn.onclick = async (e) => {
+          const id = e.currentTarget.dataset.id;
+          const newStatus = e.currentTarget.dataset.status;
+          
+          await database.ref(`withdrawals/${id}`).update({
+            status: newStatus,
+            processedAt: Date.now(),
+            processedBy: AppState.currentUser?.uid
+          });
+          
+          showToast(`Request ${newStatus}`, 'success');
+          loadWithdrawalsTable();
+        };
+      });
+    };
+    
+    if ($('withdrawalFilter')) {
+      $('withdrawalFilter').addEventListener('change', loadWithdrawalsTable);
+    }
+    
+    // Game settings sliders
+    [1,2,3,4].forEach(i => {
+      const freqSlider = $(`game${i}Freq`);
+      const coinsSlider = $(`game${i}Coins`);
+      
+      if (freqSlider) {
+        freqSlider.oninput = () => {
+          $(`game${i}FreqVal`).textContent = `${freqSlider.value} min`;
+          AppState.gameSettings[`game${i}`].frequency = parseInt(freqSlider.value);
+        };
+      }
+      
+      if (coinsSlider) {
+        coinsSlider.oninput = () => {
+          $(`game${i}CoinsVal`).textContent = coinsSlider.value;
+          AppState.gameSettings[`game${i}`].coinsPerAd = parseInt(coinsSlider.value);
+        };
+      }
+    });
+    
+    $('saveGameSettings').addEventListener('click', async () => {
+      await database.ref('games/settings').update(AppState.gameSettings);
+      showToast('Game settings saved!', 'success');
+    });
+    
+    // Copy referral code
+    $('copyReferral').addEventListener('click', () => {
+      const code = $('referralCode').value;
+      navigator.clipboard.writeText(code).then(() => {
+        showToast('Referral code copied!', 'success');
+      });
+    });
+    
+    // Settings button (placeholder)
+    $('settingsBtn').addEventListener('click', () => {
+      showToast('Settings coming soon!', 'warning');
+    });
+    
+    // ===== INITIALIZATION =====
+    const init = () => {
+      // Hide splash after delay
+      setTimeout(() => {
+        $('splashScreen').style.display = 'none';
+        // Auth state listener will show appropriate screen
+      }, 2500);
+      
+      // Setup auth
+      setupAuth();
+      
+      // Setup canvas resize
+      const resizeCanvas = () => {
+        const canvas = $('gameCanvas');
+        if (canvas) {
+          const scale = Math.min(1, window.innerWidth / 400);
+          canvas.style.transform = `scale(${scale})`;
+        }
+      };
+      
+      window.addEventListener('resize', resizeCanvas);
+      resizeCanvas();
+      
+      // Prevent default touch behaviors for games
+      document.body.addEventListener('touchmove', (e) => {
+        if (AppState.currentScreen === 'game') {
+          e.preventDefault();
+        }
+      }, { passive: false });
+      
+      // Load game settings from Firebase if available
+      database.ref('games/settings').once('value').then(snapshot => {
+        if (snapshot.exists()) {
+          AppState.gameSettings = { ...AppState.gameSettings, ...snapshot.val() };
+        }
+      });
+    };
+    
+    // Start app when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  </script>
+</body>
+</html>
